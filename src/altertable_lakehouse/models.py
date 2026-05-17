@@ -69,6 +69,25 @@ class ValidateResponse(BaseModel):
     connections_errors: Any
     error: Optional[str] = None
 
+class AutocompleteRequest(BaseModel):
+    statement: str
+    catalog: Optional[str] = None
+    schema_: Optional[str] = Field(default=None, alias="schema")
+    session_id: Optional[str] = None
+    max_suggestions: Optional[int] = None
+
+class AutocompleteSuggestion(BaseModel):
+    suggestion: str
+    suggestion_start: int
+    suggestion_type: str
+    suggestion_score: int
+    extra_char: Optional[str] = None
+
+class AutocompleteResponse(BaseModel):
+    suggestions: List[AutocompleteSuggestion]
+    statement: str
+    connections_errors: Dict[str, Any]
+
 class QueryMetadata(BaseModel):
     columns: List[Dict[str, Any]] = Field(default_factory=list)
     stats: Dict[str, Any] = Field(default_factory=dict)

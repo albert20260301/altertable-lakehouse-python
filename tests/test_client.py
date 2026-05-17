@@ -59,6 +59,14 @@ def test_validate(client):
     res = client.validate("SELECT 1")
     assert res.valid is not None
 
+
+def test_autocomplete(client):
+    res = client.autocomplete(models.AutocompleteRequest(statement="SEL", max_suggestions=5))
+    assert res.statement == "SEL"
+    assert len(res.suggestions) <= 5
+    assert any(suggestion.suggestion for suggestion in res.suggestions)
+
+
 def test_get_query(client):
     try:
         client.get_query("00000000-0000-0000-0000-000000000000")
