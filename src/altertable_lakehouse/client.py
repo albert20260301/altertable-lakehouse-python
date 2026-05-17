@@ -7,8 +7,8 @@ from typing import Any, Dict, Iterator, Optional, Union, Tuple, NoReturn
 from .models import (
     AppendRequestSingle, AppendRequestBatch, AppendResponse,
     QueryRequest, QueryLogResponse, CancelQueryResponse,
-    ValidateResponse, UploadFormat, UploadMode,
-    QueryMetadata, QueryResult
+    ValidateResponse, AutocompleteRequest, AutocompleteResponse,
+    UploadFormat, UploadMode, QueryMetadata, QueryResult
 )
 from .errors import (
     AuthError, BadRequestError, NetworkError, TimeoutError,
@@ -130,6 +130,15 @@ class Client:
             res = self._client.post("/validate", json={"statement": statement})
             self._check_response(res)
             return ValidateResponse(**res.json())
+        except httpx.RequestError as e:
+            self._handle_error(e)
+
+    def autocomplete(self, request: AutocompleteRequest) -> AutocompleteResponse:
+        payload = request.model_dump(exclude_none=True, by_alias=True)
+        try:
+            res = self._client.post("/autocomplete", json=payload)
+            self._check_response(res)
+            return AutocompleteResponse(**res.json())
         except httpx.RequestError as e:
             self._handle_error(e)
 
