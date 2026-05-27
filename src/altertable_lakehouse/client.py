@@ -3,7 +3,7 @@ import json
 import base64
 import ssl
 import httpx
-from typing import Any, Dict, Iterator, Optional, Union, Tuple, NoReturn
+from typing import Any, Iterator, Optional, Union, Tuple, NoReturn
 from .models import (
     AppendRequestSingle,
     AppendRequestBatch,
