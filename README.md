@@ -8,6 +8,28 @@ Official Python SDK for the Altertable Lakehouse API.
 pip install altertable-lakehouse
 ```
 
+### Ibis
+
+```bash
+pip install 'altertable-lakehouse[ibis]'
+```
+
+```python
+import ibis
+
+con = ibis.altertable.connect(
+    username="your_username", password="your_password",
+    catalog="my_catalog", database="my_schema",
+)
+orders = con.table("orders")
+totals = orders.group_by("customer_id").aggregate(total=orders.amount.sum())
+print(totals.execute())
+con.disconnect()
+```
+
+`database` means schema. Queries run remotely; results are buffered in memory.
+Writes use the SDK directly. See the [runnable example](examples/ibis_queries.py).
+
 ## Usage
 
 ### Initialization
